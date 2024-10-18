@@ -1,0 +1,11 @@
+---
+services:
+  snmp_exporter:
+    command: [ "--config.expand-environment-variables", "--config.file=/etc/snmp_exporter/snmp.yml"]
+    ports:
+      - 9116:9116
+    environment:
+      - SNMP_USERNAME=snmpuser
+      - SNMP_PASSWORD=librenmsdocker
+      - SNMP_PRIV_PASSWORD=librenmsdocker
+    build: .
