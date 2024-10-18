@@ -97,6 +97,8 @@ modules:
     - jnxOperatingCPU
     - jnxOperatingMemory
     - jnxOperatingBuffer
+    - jnxYellowAlarmState
+    - jnxRedAlarmState
     lookups:
     - source_indexes:
       - jnxOperatingContentsIndex
@@ -105,6 +107,11 @@ modules:
       - jnxOperatingL3Index
       lookup: jnxOperatingDescr
       drop_source_indexes: true
+    overrides:
+      jnxYellowAlarmState:
+        type: EnumAsStateSet
+      jnxRedAlarmState:
+        type: EnumAsStateSet
 
   # Junos DOM
   junos_dom:
