@@ -133,8 +133,6 @@ modules:
         scale: .01
       jnxDomCurrentTxLaserOutputPower:
         scale: .01
-      jnxDomCurrentAlarms:
-        type: EnumAsStateSet
       ifName:
         ignore: true # Lookup metric
 
