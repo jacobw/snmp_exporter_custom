@@ -16,77 +16,34 @@ auths:
 modules:
   # Default IF-MIB interfaces table with ifIndex.
   if_mib:
-    walk: [sysUpTime, interfaces, ifXTable]
-    lookups:
-      - source_indexes: [ifIndex]
-        lookup: ifAlias
-      - source_indexes: [ifIndex]
-        # Uis OID to avoid conflict with PaloAlto PAN-COMMON-MIB.
-        lookup: 1.3.6.1.2.1.2.2.1.2 # ifDescr
-      - source_indexes: [ifIndex]
-        # Use OID to avoid conflict with Netscaler NS-ROOT-MIB.
-        lookup: 1.3.6.1.2.1.31.1.1.1.1 # ifName
-    overrides:
-      ifAlias:
-        ignore: true # Lookup metric
-      ifDescr:
-        ignore: true # Lookup metric
-      ifName:
-        ignore: true # Lookup metric
-      ifType:
-        type: EnumAsInfo
-
-  # Trimmed down if_mib for slow JunOS devices.
-  if_mib_junos:
     walk:
     - sysUpTime
-    # ifXTable
     - ifHCInOctets
     - ifHCInUcastPkts
     - ifHCInBroadcastPkts
     - ifHCOutOctets
     - ifHCOutUcastPkts
     - ifHCOutBroadcastPkts
-    lookups:
-    - source_indexes: [ifIndex]
-      lookup: ifName
-      drop_source_indexes: true
-    - source_indexes: [ifIndex]
-      lookup: ifAlias
-    overrides:
-      ifAlias:
-        ignore: true # Lookup metric
-      ifName:
-        ignore: true # Lookup metric
-      
-
-  # Trimmed down if_mib for slow JunOS devices.
-  if_mib_junos_errors:
-    walk:
-    # ifTable
     - ifAdminStatus
     - ifOperStatus
     - ifInDiscards
     - ifInErrors
     - ifOutDiscards
     - ifOutErrors
-    # ifXTable
     - ifHighSpeed
     lookups:
-    - source_indexes:
-      - ifIndex
+    - source_indexes: [ifIndex]
       lookup: ifName
       drop_source_indexes: true
-    - source_indexes:
-      - ifIndex
+    - source_indexes: [ifIndex]
       lookup: ifAlias
     overrides:
-      ifAdminStatus:
-        type: EnumAsStateSet
       ifAlias:
         ignore: true # Lookup metric
       ifName:
         ignore: true # Lookup metric
+      ifAdminStatus:
+        type: EnumAsStateSet
       ifOperStatus:
         type: EnumAsStateSet
       ifType:
@@ -99,6 +56,7 @@ modules:
     - jnxOperatingBuffer
     - jnxYellowAlarmState
     - jnxRedAlarmState
+    - jnxFruState
     lookups:
     - source_indexes:
       - jnxOperatingContentsIndex
@@ -107,10 +65,19 @@ modules:
       - jnxOperatingL3Index
       lookup: jnxOperatingDescr
       drop_source_indexes: true
+    - source_indexes:
+      - jnxFruContentsIndex
+      - jnxFruL1Index
+      - jnxFruL2Index
+      - jnxFruL3Index
+      lookup: jnxFruName
+      drop_source_indexes: true
     overrides:
       jnxYellowAlarmState:
         type: EnumAsStateSet
       jnxRedAlarmState:
+        type: EnumAsStateSet
+      jnxFruState:
         type: EnumAsStateSet
 
   # Junos DOM
@@ -120,25 +87,6 @@ modules:
       - jnxDomCurrentTxLaserOutputPower
       - jnxDomCurrentWarnings
       - jnxDomCurrentAlarms
-    lookups:
-      - source_indexes:
-        - ifIndex
-        lookup: ifName
-        drop_source_indexes: true
-      - source_indexes:
-        - ifIndex
-        lookup: ifAlias
-    overrides:
-      jnxDomCurrentRxLaserPower:
-        scale: .01
-      jnxDomCurrentTxLaserOutputPower:
-        scale: .01
-      ifName:
-        ignore: true # Lookup metric
-
-  # Thresholds don't change so ideally polled less/cached.
-  junos_dom_thresholds:
-    walk:
       - jnxDomCurrentRxLaserPowerHighAlarmThreshold
       - jnxDomCurrentRxLaserPowerLowAlarmThreshold
       - jnxDomCurrentRxLaserPowerHighWarningThreshold
@@ -156,6 +104,12 @@ modules:
         - ifIndex
         lookup: ifAlias
     overrides:
+      jnxDomCurrentRxLaserPower:
+        scale: .01
+      jnxDomCurrentTxLaserOutputPower:
+        scale: .01
+      ifName:
+        ignore: true # Lookup metric
       jnxDomCurrentRxLaserPowerHighAlarmThreshold:
         scale: .01
       jnxDomCurrentRxLaserPowerLowAlarmThreshold:
@@ -173,18 +127,4 @@ modules:
       jnxDomCurrentTxLaserOutputPowerLowWarningThreshold:
         scale: .01
 
-  junos_fru:
-    walk:
-    - jnxFruState
-    lookups:
-      - source_indexes:
-        - jnxFruContentsIndex
-        - jnxFruL1Index
-        - jnxFruL2Index
-        - jnxFruL3Index
-        lookup: jnxFruName
-        drop_source_indexes: true
-    overrides:
-      jnxFruState:
-        type: EnumAsStateSet
 
