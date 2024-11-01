@@ -4,7 +4,7 @@ auths:
     version: 1
   public_v2:
     version: 2
-  v3:
+  V3:
     version: 3
     username: ${SNMP_USERNAME}
     security_level: authPriv
@@ -12,6 +12,23 @@ auths:
     auth_protocol: SHA
     priv_protocol: AES
     priv_password: ${SNMP_PRIV_PASSWORD}
+  V3_SHA256_AES:
+    version: 3
+    username: ${SNMP_USERNAME}
+    security_level: authPriv
+    password: ${SNMP_PASSWORD}
+    auth_protocol: SHA256
+    priv_protocol: AES
+    priv_password: ${SNMP_PRIV_PASSWORD}
+  V3_SHA_AES256:
+    version: 3
+    username: ${SNMP_USERNAME}
+    security_level: authPriv
+    password: ${SNMP_PASSWORD}
+    auth_protocol: SHA
+    priv_protocol: AES256
+    priv_password: ${SNMP_PRIV_PASSWORD}
+
 
 modules:
   # Default IF-MIB interfaces table with ifIndex.

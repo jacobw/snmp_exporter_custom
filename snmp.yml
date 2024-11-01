@@ -1,5 +1,32 @@
 # WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.
 auths:
+  V3:
+    community: public
+    security_level: authPriv
+    username: ${SNMP_USERNAME}
+    password: ${SNMP_PASSWORD}
+    auth_protocol: SHA
+    priv_protocol: AES
+    priv_password: ${SNMP_PRIV_PASSWORD}
+    version: 3
+  V3_SHA_AES256:
+    community: public
+    security_level: authPriv
+    username: ${SNMP_USERNAME}
+    password: ${SNMP_PASSWORD}
+    auth_protocol: SHA
+    priv_protocol: AES256
+    priv_password: ${SNMP_PRIV_PASSWORD}
+    version: 3
+  V3_SHA256_AES:
+    community: public
+    security_level: authPriv
+    username: ${SNMP_USERNAME}
+    password: ${SNMP_PASSWORD}
+    auth_protocol: SHA256
+    priv_protocol: AES
+    priv_password: ${SNMP_PRIV_PASSWORD}
+    version: 3
   public_v1:
     community: public
     security_level: noAuthNoPriv
@@ -12,15 +39,6 @@ auths:
     auth_protocol: MD5
     priv_protocol: DES
     version: 2
-  v3:
-    community: public
-    security_level: authPriv
-    username: ${SNMP_USERNAME}
-    password: ${SNMP_PASSWORD}
-    auth_protocol: SHA
-    priv_protocol: AES
-    priv_password: ${SNMP_PRIV_PASSWORD}
-    version: 3
 modules:
   if_mib:
     walk:
