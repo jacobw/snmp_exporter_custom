@@ -71,9 +71,6 @@ modules:
     - jnxOperatingCPU
     - jnxOperatingMemory
     - jnxOperatingBuffer
-    - jnxYellowAlarmState
-    - jnxRedAlarmState
-    - jnxFruState
     lookups:
     - source_indexes:
       - jnxOperatingContentsIndex
@@ -82,6 +79,13 @@ modules:
       - jnxOperatingL3Index
       lookup: jnxOperatingDescr
       drop_source_indexes: true
+
+  junos_fru:
+    walk:
+    - jnxYellowAlarmState
+    - jnxRedAlarmState
+    - jnxFruState
+    lookups:
     - source_indexes:
       - jnxFruContentsIndex
       - jnxFruL1Index
