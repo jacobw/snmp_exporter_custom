@@ -80,6 +80,10 @@ modules:
       lookup: jnxOperatingDescr
       drop_source_indexes: true
 
+  junos_sub:
+    walk:
+      - jnxSubscriberPortTerminatedCounter
+
   junos_fru:
     walk:
     - jnxYellowAlarmState
